@@ -82,6 +82,8 @@ if (!class_exists('WP_Environmentalist')) {
             add_action('updated_option', array($this, 'updatedOption'), 1, 3);
             add_action('added_option', array($this, 'addedOption'), 1, 2);
 
+            register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+
         }
 
         private function isOptionsSetName( $optionName ) {
@@ -214,13 +216,30 @@ if (!class_exists('WP_Environmentalist')) {
             return $newOptionValue;
         }
 
-    // On action delete_option, we delete... ?
+        // On action delete_option, we delete... ?
 
-    // Do we need to avoid doing this for transients? Probably not.
+        // Do we need to avoid doing this for transients? Probably not.
+
+        // On deactivate (or uninstall?) we need to copy all default environment options back to their real option names
+        public function deactivate() {
+            
+            // Set the instance to use and to write to the default options set.
+            $this->environmentName = 'default';
+            $this->environmentOptionsSetName = 'wpenvst_options_set_' . $this->environmentName;
+            $this->envOptionsSet = get_option( $this->environmentOptionsSetName );
+            // Set all the options that are in the default options set
+            foreach ($this->defaultEnvOptionsSet as $thisOptionName => $thisOptionValue) {
+                // When running this, update_option() will get the current value to compare
+                // and it will only update if they are different. Because we've set Environmentalist
+                // to use the default environment's option set, and we're writing the default
+                // environment's values, we need to force update_option to write the option.
+                // We do this by removing the get_option filter.
+                remove_filter( 'option_' . $thisOptionName, array($this, 'getOption'), 1);
+                update_option( $thisOptionName, $thisOptionValue );
+            }
+        }
 
     }
-
-    // On deactivate (or uninstall?) we need to copy all...?
 
     $environmentalist = new WP_Environmentalist();
 
