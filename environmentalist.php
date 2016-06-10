@@ -82,6 +82,8 @@ if (!class_exists('WP_Environmentalist')) {
             add_action('updated_option', array($this, 'updatedOption'), 1, 3);
             add_action('added_option', array($this, 'addedOption'), 1, 2);
 
+            add_action( 'admin_bar_menu', array($this, 'add_toolbar_info'), 999 );
+
             register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
         }
@@ -219,6 +221,14 @@ if (!class_exists('WP_Environmentalist')) {
         // On action delete_option, we delete... ?
 
         // Do we need to avoid doing this for transients? Probably not.
+
+        public function add_toolbar_info( $wp_admin_bar ) {
+            $args = array(
+                'id' => 'environmentalist',
+                'title' => 'Environmentalist: ' . $this->environmentName,                
+                );            
+            $wp_admin_bar->add_node( $args );
+        }
 
         // On deactivate (or uninstall?) we need to copy all default environment options back to their real option names
         public function deactivate() {
