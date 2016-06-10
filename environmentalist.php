@@ -168,6 +168,10 @@ if (!class_exists('WP_Environmentalist')) {
                 update_option( $optionsSetName, $optionsSet );
             }
 
+            if ( ! has_filter( 'option_' . $option, array( $this, 'getOption' ) ) ) {
+                add_filter( 'option_' . $option, array( $this, 'getOption' ), 1, 1 );
+            } 
+
         }
 
         // On action add_option, we save the extra value with the environment suffix,
