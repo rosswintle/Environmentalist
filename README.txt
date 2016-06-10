@@ -16,7 +16,7 @@ environmentalist (n):
 
 The plugin is concerned with the conservation of your environment. In particular it lets you have per-environment options. You can switch environments by adding a constant to wp-config.php
 
-*NOTE: This plugin is very clever (I like to think) but is a massive hack and potentially dangerous to your WordPress settings and database. I shall not guarantee it's operation, and in particular, its use with other complex plugins may be disastrous. Use carefully and at your own risk!*
+*NOTE: This plugin is very clever (I like to think) but is a massive hack and potentially dangerous to your WordPress settings and database. I shall not guarantee its operation, and in particular, its use with other complex plugins may be disastrous. Use carefully and at your own risk!*
 
 *ALSO NOTE: There is an additional installation step required after uploading this plugin - see the installation section*
 
