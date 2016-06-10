@@ -74,13 +74,13 @@ if (!class_exists('WP_Environmentalist')) {
             }
 
             foreach ($this->envOptionsSet as $thisOptionName => $thisOption) {
-                add_filter('option_' . $thisOptionName, array($this, 'get_option'), 1, 1);
+                add_filter('option_' . $thisOptionName, array($this, 'getOption'), 1, 1);
             }
 
-            add_action('add_option', array($this, 'pre_add_option'), 1, 2);
-            add_action('update_option', array($this, 'pre_update_option'), 1, 3);
-            add_action('updated_option', array($this, 'updated_option'), 1, 3);
-            add_action('added_option', array($this, 'added_option'), 1, 2);
+            add_action('add_option', array($this, 'preAddOption'), 1, 2);
+            add_action('update_option', array($this, 'preUpdateOption'), 1, 3);
+            add_action('updated_option', array($this, 'updatedOption'), 1, 3);
+            add_action('added_option', array($this, 'addedOption'), 1, 2);
 
         }
 
@@ -110,11 +110,11 @@ if (!class_exists('WP_Environmentalist')) {
         //
         // The same is true for adding options, so use the same code.
         //
-        public function pre_update_option( $option, $old_value, $value ) {
-            $this->pre_add_option( $option, $value );
+        public function preUpdateOption( $option, $old_value, $value ) {
+            $this->preAddOption( $option, $value );
         }
 
-        public function pre_add_option( $option, $value ) {
+        public function preAddOption( $option, $value ) {
             if (! $this->isDefaultEnvironment() && ! $this->isOptionsSetName( $option )) {
                 $currentValue = $this->getDefaultValue( $option );
                 //xdebug_break();
@@ -175,7 +175,7 @@ if (!class_exists('WP_Environmentalist')) {
         //
         // I've not optimised this - I've assumed that setting options isn't something that
         // happens a lot and is usually admin-side.
-        public function added_option( $option, $value ) {
+        public function addedOption( $option, $value ) {
             if (! $this->isOptionsSetName( $option )) {
                 $this->addToOptionSet( $option, $value, $this->envOptionsSet, $this->environmentOptionsSetName );
             }
@@ -183,11 +183,11 @@ if (!class_exists('WP_Environmentalist')) {
 
         // On action update_option, we save the extra value with the environment suffix
         // but only if we're not already saving something with the suffix!
-        public function updated_option( $option, $old_value, $value ) {
-            $this->added_option( $option, $value );
+        public function updatedOption( $option, $old_value, $value ) {
+            $this->addedOption( $option, $value );
         }
 
-        public function get_option( $value ) {
+        public function getOption( $value ) {
             $thisFilter = current_filter();
 
             // Don't process option sets!
