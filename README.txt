@@ -7,7 +7,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Per-environment options for WordPress.
+Environment-specific options for WordPress. Super-clever. Use with caution.
 
 == Description ==
 
@@ -33,16 +33,32 @@ WordPress made this REALLY hard. The thing that you need to know is that I - rel
 == Installation ==
 
 1. Upload the `environmentalist` folder to the `/wp-content/plugins/` directory
-1. *IMPORTANT:* Move the `environmentalist-loader.php.move-me` file to `/wp-content/plugins/environmentalist-loader.php` - this loads Environmentalist before other plugins, which is needed for the whole thing to work.
+1. *IMPORTANT:* Move the `environmentalist-loader.php.move-me` file to `/wp-content/mu-plugins/environmentalist-loader.php` - this loads Environmentalist before other plugins, which is needed for the whole thing to work.
 1. Activate the plugin through the \'Plugins\' menu in WordPress
 
 Alternatively you can upload `environmentalist.zip` from Plugins -> Add New -> Upload Plugin, but make sure you also follow the IMPORTANT step above as well.
+
+*NOTE* that because it uses a mu-plugin, Environmentalist may be active even though it shows as inactive in the plugin list.
+
+*ALSO NOTE* that because it uses a mu-plugin, Environmentalist needs the mu-plugin to be removed to deactivate it - but you need to use the deactivate option first to normalize the options before you remove the mu-plugin.
 
 == Frequently Asked Questions ==
 
 1. It broke
 
 Don't say I didn't warn you.
+
+2. It doesn't work
+
+Mmm... Yeah... Entirely possible. Use at your own risk!
+
+2. How do I uninstall it?
+
+You will need to do the following:
+
+* Remove any WP_ENVIRONMENTALIST constant from wp-config.php
+* Go to the Plugins section of the WordPress Dashboard and deactivate" Environmentalist. If it's not active (which is possible) then activate it and then deactivate it. This is needed to convert Environmentalist's "cached" options back into real options.
+* Remove environmentalist-loader.php from mu-plugins
 
 == Changelog ==
 = 0.1 =
